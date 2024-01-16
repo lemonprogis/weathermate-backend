@@ -18,19 +18,15 @@ app.get('/ping', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.send({home: 'ok'});
-});
+  const lat = req.query.lat;
+  const lng = req.query.lng;
+  const units = req.query.units || 'F';
 
-app.get('/:coords', (req, res) => {
-  const coords = req.params.coords.split(',');
 
-  if (coords.length !== 2) {
-    res.send({message: 'check parameters. Must send latitude and longitude like: 35.3344,-92.453'});
+  if ((lat === null || lat === undefined) || (lng === null || lng === undefined)) {
+    res.send({message: 'check query parameters. lat and lng are required.'});
   }
 
-  const lat = coords[0];
-  const lng = coords[1];
-  const units = req.query.units || 'F';
 
   const options = {
     units,
