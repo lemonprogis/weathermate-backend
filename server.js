@@ -1,23 +1,19 @@
 import express from "express";
 import http from "http";
 import cors from "cors";
+import {createTerminus} from "@godaddy/terminus";
+import {getActiveAlertsForLatLng, getForecast, getForecastForLatLng, getHourlyForecast, getNWSForecast, checkApi} from './weather.js';
+import { mapAlerts, mapDailyForecastPeriods } from "./mappers.js";
 
 const app = express();
 const server = http.createServer(app);
 
-import {getActiveAlertsForLatLng, getForecast, getForecastForLatLng, getHourlyForecast, getNWSForecast} from './weather.js';
-import { mapAlerts, mapDailyForecastPeriods } from "./mappers.js";
 
 app.use(cors());
 
 const PORT = process.env.PORT || 8080;
-const HOST = process.env.HOST || 'localhost';
 
-app.get('/ping', (req, res) => {
-  res.send({status: 'ok'});
-});
-
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   const lat = req.query.lat;
   const lng = req.query.lng;
   const units = req.query.units || 'F';
@@ -61,8 +57,27 @@ app.get('/', (req, res) => {
   })();
 });
 
+function onSignal() {
+  console.log('server is starting cleanup');
+  // start cleanup of resource, like databases or file descriptors
+  return Promise.all();
+}
 
+async function onHealthCheck({ state }) {
+  // checks if the system is healthy, like the db connection is live
+  // resolves, if health, rejects if not
+  const response = await checkApi();
+  return response.data;
+}
 
-server.listen(PORT, () => {
-  console.log(`Running on ${HOST}:${PORT}`)
+function onShutdown() {
+  console.log('cleanup finished, server is shutting down');
+}
+
+createTerminus(server, {
+  healthChecks: { '/api/ping': onHealthCheck },
+  onSignal,
+  onShutdown,
 });
+
+server.listen(PORT, () => console.log('started server'));

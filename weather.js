@@ -11,6 +11,10 @@ const headers = {
     Accept: ACCEPT,
 };
 
+export const checkApi = () => {
+  return axios.get('https://api.weather.gov/');
+}
+
 export const getNWSForecast = (lat, lng) => {
     /**
      * For some reason, this is the only NWS way to get this data for a specific point. the new API doesn't have this
