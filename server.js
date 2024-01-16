@@ -17,9 +17,19 @@ app.get('/ping', (req, res) => {
   res.send({status: 'ok'});
 });
 
-app.get('/weathergov/:lat/:lng', (req, res) => {
-  const lat = req.params.lat;
-  const lng = req.params.lng;
+app.get('/', (req, res) => {
+  res.send({home: 'ok'});
+});
+
+app.get('/:coords', (req, res) => {
+  const coords = req.params.coords.split(',');
+
+  if (coords.length !== 2) {
+    res.send({message: 'check parameters. Must send latitude and longitude like: 35.3344,-92.453'});
+  }
+
+  const lat = coords[0];
+  const lng = coords[1];
   const units = req.query.units || 'F';
 
   const options = {
