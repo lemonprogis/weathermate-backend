@@ -45,7 +45,7 @@ app.use(
   swaggerUi.serve,
   swaggerUi.setup(null, {
     swaggerOptions: {
-      url: `${HOST}:${PORT}/api-docs`,
+      url: `${HOST}/api-docs`,
     },
   })
 );
