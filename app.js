@@ -8,7 +8,7 @@ const {initialize} = require("express-openapi");
 const app = express();
 
 const PORT = process.env.PORT || 8080;
-const HOST = process.env.HOST || 'localhost';
+const HOST = process.env.HOST || 'http://localhost';
 
 function onSignal() {
   console.log('server is starting cleanup');
@@ -45,14 +45,14 @@ app.use(
   swaggerUi.serve,
   swaggerUi.setup(null, {
     swaggerOptions: {
-      url: `http://${HOST}:${PORT}/api-docs`,
+      url: `${HOST}:${PORT}/api-docs`,
     },
   })
 );
 
-console.log(`App running on port http://${HOST}:${PORT}`);
+console.log(`App running on port ${HOST}:${PORT}`);
 console.log(
-  `OpenAPI documentation available in http://${HOST}:${PORT}/api-documentation`
+  `OpenAPI documentation available in ${HOST}:${PORT}/api-documentation`
 );
 
 module.exports = app;
