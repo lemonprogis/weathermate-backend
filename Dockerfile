@@ -13,4 +13,4 @@ USER node
 COPY --chown=node:node . .
 RUN npm run test
 
-CMD [ "node", "server.js" ]
+CMD [ "node", "app.js" ]
