@@ -25,7 +25,7 @@ function onShutdown() {
 }
 
 createTerminus(app, {
-  healthChecks: { '/api/ping': onHealthCheck },
+  healthChecks: { '/healthcheck': onHealthCheck },
   onSignal,
   onShutdown,
 });
