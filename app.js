@@ -1,6 +1,6 @@
+require('dotenv').config();
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
-
 const {createTerminus} = require("@godaddy/terminus");
 const {checkApi} = require('./src/services/weather.js');
 const {initialize} = require("express-openapi");
@@ -8,6 +8,7 @@ const {initialize} = require("express-openapi");
 const app = express();
 
 const PORT = process.env.PORT || 8080;
+const HOST = process.env.HOST || 'localhost';
 
 function onSignal() {
   console.log('server is starting cleanup');
@@ -44,14 +45,14 @@ app.use(
   swaggerUi.serve,
   swaggerUi.setup(null, {
     swaggerOptions: {
-      url: `http://localhost:${PORT}/api-docs`,
+      url: `http://${HOST}:${PORT}/api-docs`,
     },
   })
 );
 
-console.log(`App running on port http://localhost:${PORT}`);
+console.log(`App running on port http://${HOST}:${PORT}`);
 console.log(
-  `OpenAPI documentation available in http://localhost:${PORT}/api-documentation`
+  `OpenAPI documentation available in http://${HOST}:${PORT}/api-documentation`
 );
 
 module.exports = app;
