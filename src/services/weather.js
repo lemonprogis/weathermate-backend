@@ -1,6 +1,6 @@
 const axios = require("axios");
 const axiosRetry = require('axios-retry').default;
-const {mapAlerts, mapDailyForecastPeriods} = require("./mappers");
+const {mapAlerts, mapDailyForecastPeriods, mapCurrentObservation} = require("./mappers");
 const { error } = require("console");
 
 const USER_AGENT = '(weathermateplus.com, contact@weathermateplus.com)';
@@ -45,7 +45,7 @@ async function getWeatherData (lat, lng) {
 
   const response = {
     location: currentConditions.location,
-    currentObservation: currentConditions.currentobservation,
+    currentObservation: mapCurrentObservation(currentConditions.currentobservation),
     days: mapDailyForecastPeriods(forecast.properties.periods, hourlyForecast.properties.periods, options),
     alerts: mapAlerts(activeAlerts.features, options),
   };
