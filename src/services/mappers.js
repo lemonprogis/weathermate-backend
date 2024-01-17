@@ -1,6 +1,6 @@
-import {toFahrenheit} from './utils.js';
+const {toFahrenheit, getWindDirection, feelsLike} = require("./utils");
 
-export const forecastPeriod = (period, options) => {
+function forecastPeriod(period, options) {
     return {
         id: period.number,
         name: period.name,
@@ -21,7 +21,7 @@ export const forecastPeriod = (period, options) => {
       }
 };
 
-export const mapAlert = (alert) => {
+function mapAlert(alert) {
     return {
         id: alert.properties.id,
         areaDesc: alert.properties.areaDesc,
@@ -43,17 +43,45 @@ export const mapAlert = (alert) => {
       };
 };
 
-export const dailyForecastPeriod = (period, hourlyPeriods, options) => {
+function dailyForecastPeriod(period, hourlyPeriods, options) {
     return {
         ...forecastPeriod(period, options),
         hourly: hourlyPeriods.filter(hp => hp.startTime.includes(period.startTime.split('T')[0]) && hp.isDaytime === period.isDaytime).map(hp => forecastPeriod(hp, options))
       };
 };
 
-export const mapDailyForecastPeriods = (periods, hourlyPeriods, options) => {
+function mapDailyForecastPeriods(periods, hourlyPeriods, options) {
     return periods.map(p => dailyForecastPeriod(p, hourlyPeriods, options));
 };
 
-export const mapAlerts = (alerts, options) => {
+function mapAlerts(alerts, options) {
     return alerts.map(mapAlert);
 };
+
+function mapCurrentObservation(co) {
+    return {
+        id: co.id,
+        name: co.name,
+        observationDate: co.Date,
+        temperature: +co.Temp,
+        dewpoint: +co.Dewp,
+        relativeHumidity: `${co.Relh}%`,
+        windSpeed: +co.Winds,
+        windDirection: getWindDirection(+co.Windd),
+        windGusts: co.Gust,
+        weather: co.Weather,
+        icon: `https://forecast.weather.gov/images/wtf/large/${co.Weatherimage}`,
+        visibility: co.Visibility,
+        altimeter: co.Altimeter,
+        seaLevelPressure: co.SLP,
+        timezone: co.timezone,
+        state: co.state,
+        feelsLike: feelsLike(co),
+    };
+};
+
+module.exports = {
+    mapAlerts,
+    mapDailyForecastPeriods,
+    mapCurrentObservation,
+}

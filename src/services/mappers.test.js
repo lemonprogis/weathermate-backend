@@ -1,8 +1,9 @@
-import {mapAlerts, mapDailyForecastPeriods} from "./mappers";
+import {mapAlerts, mapDailyForecastPeriods, mapCurrentObservation} from "./mappers";
 
-const forecastData = require('./test_data/forecast_response.json');
-const hourlyForecastData = require('./test_data/forecast_hourly_response.json');
-const alertData = require('./test_data/alerts_response.json');
+const forecastData = require('../test_data/forecast_response.json');
+const hourlyForecastData = require('../test_data/forecast_hourly_response.json');
+const alertData = require('../test_data/alerts_response.json');
+const currentObservationData = require('../test_data/currentobservation_response.json');
 
 test('maps forecast periods', () => {
     const options = {
@@ -31,4 +32,10 @@ test('maps forecasts periods with hourly included', () => {
 test('alerts map', () => {
     const alerts = mapAlerts(alertData.features, {});
     expect(alerts.length).toBe(2);
+});
+
+test('current observation mappings', () => {
+    const mappedObservation = mapCurrentObservation(currentObservationData.currentobservation);
+    console.log(mappedObservation);
+    expect(mappedObservation).not.toBe(null);
 });
