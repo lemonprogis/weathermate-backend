@@ -14,7 +14,7 @@ const headers = {
 };
 
 function checkApi() {
-  return axios.get('https://api.weather.gov/');
+  return axios.get('https://api.weather.gov/', {headers});
 }
 
 async function getWeatherData (lat, lng) {

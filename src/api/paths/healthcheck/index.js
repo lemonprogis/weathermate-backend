@@ -6,8 +6,8 @@ module.exports = function () {
     };
 
     async function GET(req, res, next) {
-        const data = await checkApi();
-        res.status(200).json(data);
+        const response = await checkApi();
+        res.status(200).json(response.data);
     }
 
     GET.apiDoc = {
