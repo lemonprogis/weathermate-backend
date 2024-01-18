@@ -21,3 +21,14 @@ jobs:
         run: |
           docker tag weathermate:1.0.0-SNAPSHOT index.docker.io/lemonpro/weathermate:latest
           docker push index.docker.io/lemonpro/weathermate:latest
+      - name: deploy weathermateplus api
+        uses: appleboy/ssh-action@v0.1.2
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          key: ${{ secrets.SSH_KEY }}
+          username: ${{ secrets.SSH_USERNAME }}
+        script: |
+          cd /home/app
+          docker-compose pull
+          docker-compose down && docker-compose up -d
+          echo 'deployment successful'
