@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-push-2-docker:
+  build-push-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
