@@ -5,8 +5,14 @@ const {initialize} = require("express-openapi");
 
 const app = express();
 
+app.set('view engine', 'ejs');
+
 const PORT = process.env.PORT || 8080;
 const HOST = process.env.HOST;
+
+app.get('/', (req, res) => {
+  res.render('pages/index');
+});
 
 app.listen(PORT);
 app.use(express.json());

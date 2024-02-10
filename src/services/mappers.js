@@ -15,7 +15,7 @@ function forecastPeriod(period, options) {
         relativeHumidity: `${period.relativeHumidity.value}%`,
         windSpeed: period.windSpeed,
         windDirection: period.windDirection,
-        icon: period.icon,
+        icon: period.icon.includes(',0?size') ? period.icon.split(',')[0] : period.icon,
         shortForecast: period.shortForecast,
         detailedForecast: period.detailedForecast,
       }
