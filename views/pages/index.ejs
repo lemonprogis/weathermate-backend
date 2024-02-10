@@ -46,6 +46,7 @@
     console.log(l);
     const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${l}&key=AIzaSyAmRkyAU2E4fHcEGAvMFf2cSDQhkBkutY0`);
     const output = await response.json();
+    console.log(output);
     // default grab first result
     const result = output.results[0].geometry.location;
     const weatherData = await getWeathermateData(result);
