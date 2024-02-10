@@ -44,7 +44,7 @@
   async function geocode() {
     const l = document.getElementById('location').value;
     console.log(l);
-    const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${l}&key=AIzaSyCXh3XBaH80clWYjd_JxLwFfUTBeMVh5gM`);
+    const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${l}&key=AIzaSyAmRkyAU2E4fHcEGAvMFf2cSDQhkBkutY0`);
     const output = await response.json();
     // default grab first result
     const result = output.results[0].geometry.location;
