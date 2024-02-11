@@ -2,8 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const {initialize} = require("express-openapi");
+const {config} = require('dotenv');
 
 const app = express();
+
+config();
 
 app.set('view engine', 'ejs');
 

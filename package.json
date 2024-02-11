@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start:prod": "PROD=true node app.js",
-    "start:dev": "HOST=http://localhost:8080 nodemon app.js",
+    "start:dev": "nodemon -r dotenv/config app.js",
     "test": "jest"
   },
   "author": "",
@@ -15,7 +15,7 @@
     "axios": "^1.6.5",
     "axios-retry": "^4.0.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
+    "dotenv": "^16.4.2",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-openapi": "^12.1.3",

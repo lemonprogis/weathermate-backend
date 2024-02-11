@@ -44,19 +44,14 @@
   async function geocode() {
     const l = document.getElementById('location').value;
     console.log(l);
-    const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${l}&key=AIzaSyAmRkyAU2E4fHcEGAvMFf2cSDQhkBkutY0`);
-    const output = await response.json();
-    console.log(output);
-    // default grab first result
-    const result = output.results[0].geometry.location;
-    const weatherData = await getWeathermateData(result);
+    const weatherData = await getWeathermateData(l);
     
     setupCurrentObservation(weatherData.currentObservation);
     setupForecastDays(weatherData.days);
   }
 
   async function getWeathermateData(l) {
-    const response = await fetch(`/api?lat=${l.lat}&lng=${l.lng}`);
+    const response = await fetch(`/api/location?address=${l}`);
     const output = await response.json();
     return output;
   }
