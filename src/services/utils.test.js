@@ -1,7 +1,12 @@
 import {feelsLike, getWindDirection, toFahrenheit} from "./utils";
 
 test('temp conversions work', () => {
-    expect(toFahrenheit(0)).toBe("32°");
+    const x = {
+        dewpoint: {
+            value: 0,
+        }
+    };
+    expect(toFahrenheit(x.dewpoint)).toBe("32°");
 });
 
 test('wind direction works', () => {
