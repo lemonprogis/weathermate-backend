@@ -11,8 +11,8 @@ function forecastPeriod(period, options) {
         temperatureUnit: options.unit,
         temperatureTrend: period.temperatureTrend,
         probabilityOfPrecipitation: `${period.probabilityOfPrecipitation.value}%`,
-        dewpoint: toFahrenheit(period.dewpoint.value), // defaults to celcius
-        relativeHumidity: `${period.relativeHumidity.value}%`,
+        dewpoint: toFahrenheit(period.dewpoint), // defaults to celcius
+        relativeHumidity: period.relativeHumidity ? `${period.relativeHumidity.value}%` : '',
         windSpeed: period.windSpeed,
         windDirection: period.windDirection,
         icon: period.icon.includes(',0?size') ? period.icon.split(',')[0] : period.icon,
@@ -59,25 +59,29 @@ function mapAlerts(alerts, options) {
 };
 
 function mapCurrentObservation(co) {
-    return {
-        id: co.id,
-        name: co.name,
-        observationDate: co.Date,
-        temperature: +co.Temp,
-        dewpoint: +co.Dewp,
-        relativeHumidity: `${co.Relh}%`,
-        windSpeed: +co.Winds,
-        windDirection: getWindDirection(+co.Windd),
-        windGusts: co.Gust,
-        weather: co.Weather,
-        icon: `https://forecast.weather.gov/images/wtf/large/${co.Weatherimage}`,
-        visibility: co.Visibility,
-        altimeter: co.Altimeter,
-        seaLevelPressure: co.SLP,
-        timezone: co.timezone,
-        state: co.state,
-        feelsLike: feelsLike(co),
-    };
+    if (co === undefined) {
+        return {}
+    } else {
+        return {
+            id: co.id,
+            name: co.name,
+            observationDate: co.Date,
+            temperature: +co.Temp,
+            dewpoint: +co.Dewp,
+            relativeHumidity: `${co.Relh}%`,
+            windSpeed: +co.Winds,
+            windDirection: getWindDirection(+co.Windd),
+            windGusts: co.Gust,
+            weather: co.Weather,
+            icon: `https://forecast.weather.gov/images/wtf/large/${co.Weatherimage}`,
+            visibility: co.Visibility,
+            altimeter: co.Altimeter,
+            seaLevelPressure: co.SLP,
+            timezone: co.timezone,
+            state: co.state,
+            feelsLike: feelsLike(co),
+        };
+    }
 };
 
 module.exports = {

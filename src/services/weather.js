@@ -49,16 +49,9 @@ async function getWeatherData (lat, lng) {
   const activeAlerts = data[1].data;
   const currentConditions = data[2].data;
 
-  const forecastData = await Promise.all([
-    getForecast(pointData.properties),
-    getHourlyForecast(pointData.properties),
-  ]).catch(error => {
-    console.log(error);
-  });
-
-  const forecast = forecastData[0].data;
-  const hourlyForecast = forecastData[1].data;
-
+  const forecast = await getForecast(pointData.properties);
+  const hourlyForecast = await getHourlyForecast(pointData.properties);
+  
   const response = {
     location: currentConditions.location,
     currentObservation: mapCurrentObservation(currentConditions.currentobservation),
@@ -83,9 +76,72 @@ function getNWSForecast(lat, lng) {
   };
   console.log(params);
   const url = 'https://forecast.weather.gov/MapClick.php';
-  return axios.get(url, {params, headers: {
-    Accept: 'application/json',
-  }});
+  return new Promise((resolve, reject) => {
+    axios.get(url, {params, headers: {
+      Accept: 'application/json',
+    }}).then(({status, data}) => {
+      if (status === 503) {
+        resolve({
+          location: {},
+          currentObservation: {
+            "id": "0",
+            "name": "",
+            "elev": "",
+            "latitude": "32",
+            "longitude": "",
+            "Date": "",
+            "Temp": "",
+            "Dewp": "",
+            "Relh": "",
+            "Winds": "",
+            "Windd": "",
+            "Gust": "",
+            "Weather": "",
+            "Weatherimage": "",
+            "Visibility": "",
+            "Altimeter": "",
+            "SLP": "",
+            "timezone": "",
+            "state": "",
+            "WindChill": ""
+          }
+        });
+      } else if (status === 200) {
+        resolve(data);
+      } else {
+        reject(new Error('error current observation data from forecast.weather.gov'));
+      }
+    }).catch(error => {
+      console.log('forecast.weather.gov STATUS CODE: ',error.response.status);
+      if (error.response.status === 503) {
+        resolve({
+          location: {},
+          currentObservation: {
+            "id": "",
+            "name": "",
+            "elev": "",
+            "latitude": "",
+            "longitude": "",
+            "Date": "",
+            "Temp": "",
+            "Dewp": "",
+            "Relh": "",
+            "Winds": "",
+            "Windd": "",
+            "Gust": "",
+            "Weather": "",
+            "Weatherimage": "",
+            "Visibility": "",
+            "Altimeter": "",
+            "SLP": "",
+            "timezone": "",
+            "state": "",
+            "WindChill": ""
+          }
+        });
+      }
+    });
+  });
 };
 
 function getActiveAlertsForLatLng(lat, lng) {
@@ -106,15 +162,53 @@ function getForecastForLatLng(lat, lng) {
 
 function getForecast(props) {
   console.log(props.forecast);
-  return axios.get(props.forecast, {
-    headers,
+  return new Promise((resolve, reject) => {
+    axios.get(props.forecast, {
+      headers,
+    }).then(({status, data}) => {
+      resolve(data);
+    }).catch(error => {
+      console.log('weather.gov API FORECAST STATUS CODE: ', error.response.status);
+      if (error.response.status === 503) {
+        resolve({
+          data: {
+            properties: {
+              periods: []
+            }
+          }
+        });
+      }
+    });;
   });
 };
 
 function getHourlyForecast(props) {
   console.log(props.forecastHourly);
-  return axios.get(props.forecastHourly, {
+  return new Promise((resolve, reject) => {
+    axios.get(props.forecastHourly, {
       headers,
+    }).then(({status, data}) => {
+      if (status === 503) {
+        resolve({
+          properties: {
+            periods: []
+          }
+        });
+      } else if (status === 200) {
+        resolve(data);
+      } else {
+        reject(new Error('error fetching hourly forecast data from weather.gov API'));
+      }
+    }).catch(error => {
+      console.log('weather.gov API HOURLY FORECAST STATUS CODE: ',error.response.status);
+      if (error.response.status === 503) {
+        resolve({
+          properties: {
+            periods: []
+          }
+        });
+      }
+    });
   });
 };
 
