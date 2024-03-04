@@ -80,37 +80,7 @@ function getNWSForecast(lat, lng) {
     axios.get(url, {params, headers: {
       Accept: 'application/json',
     }}).then(({status, data}) => {
-      if (status === 503) {
-        resolve({
-          location: {},
-          currentObservation: {
-            "id": "0",
-            "name": "",
-            "elev": "",
-            "latitude": "32",
-            "longitude": "",
-            "Date": "",
-            "Temp": "",
-            "Dewp": "",
-            "Relh": "",
-            "Winds": "",
-            "Windd": "",
-            "Gust": "",
-            "Weather": "",
-            "Weatherimage": "",
-            "Visibility": "",
-            "Altimeter": "",
-            "SLP": "",
-            "timezone": "",
-            "state": "",
-            "WindChill": ""
-          }
-        });
-      } else if (status === 200) {
         resolve(data);
-      } else {
-        reject(new Error('error current observation data from forecast.weather.gov'));
-      }
     }).catch(error => {
       console.log('forecast.weather.gov STATUS CODE: ',error.response.status);
       if (error.response.status === 503) {
