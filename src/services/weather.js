@@ -47,7 +47,7 @@ async function getWeatherData (lat, lng) {
   });
   const pointData = data[0].data;
   const activeAlerts = data[1].data;
-  const currentConditions = data[2].data;
+  const currentConditions = data[2]; // data not needed since i'm resolving this myself.
 
   const forecast = await getForecast(pointData.properties);
   const hourlyForecast = await getHourlyForecast(pointData.properties);
@@ -79,7 +79,7 @@ function getNWSForecast(lat, lng) {
   return new Promise((resolve, reject) => {
     axios.get(url, {params, headers: {
       Accept: 'application/json',
-    }}).then(({status, data}) => {
+    }}).then(({data}) => {
         resolve(data);
     }).catch(error => {
       console.log('forecast.weather.gov STATUS CODE: ',error.response.status);
