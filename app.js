@@ -3,10 +3,13 @@ const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const {initialize} = require("express-openapi");
 const {config} = require('dotenv');
+const cors = require('cors');
 
 const app = express();
 
 config();
+
+app.use(cors());
 
 app.set('view engine', 'ejs');
 
