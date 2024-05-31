@@ -20,6 +20,10 @@ app.get('/', (req, res) => {
   res.render('pages/index');
 });
 
+app.get('/health', (req, res) => {
+    res.json({"status": "ok"});
+});
+
 app.listen(PORT);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

@@ -23,11 +23,11 @@ configs:
 
 resources:
   limits:
-    cpu: "200m"
-    memory: "256Mi"
+    cpu: "400m"
+    memory: "800Mi"
   requests:
-    cpu: "200m"
-    memory: "256Mi"
+    cpu: "300m"
+    memory: "800Mi"
 
 startupFailureThreshold: 10
 livenessFailureThreshold: 10
