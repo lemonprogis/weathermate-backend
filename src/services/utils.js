@@ -1,5 +1,5 @@
 function toFahrenheit(temp) {
-  if (temp === null) {
+  if (temp === null || temp === undefined) {
     return '--';
   }
   return `${Math.round(temp.value * 1.8 + 32).toFixed(0)}°`;
