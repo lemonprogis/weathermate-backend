@@ -1,5 +1,9 @@
 const {toFahrenheit, getWindDirection, feelsLike} = require("./utils");
 
+function iconUrl(uri) {
+    return `https://api.weather.gov${uri}`;
+}
+
 function forecastPeriod(period, options) {
     return {
         id: period.number,
@@ -15,7 +19,7 @@ function forecastPeriod(period, options) {
         relativeHumidity: period.relativeHumidity ? `${period.relativeHumidity.value}%` : '',
         windSpeed: period.windSpeed,
         windDirection: period.windDirection,
-        icon: period.icon.includes(',0?size') ? period.icon.split(',')[0] : period.icon,
+        icon: period.icon.includes(',0?size') ? iconUrl(period.icon.split(',')[0]) : iconUrl(period.icon),
         shortForecast: period.shortForecast,
         detailedForecast: period.detailedForecast,
       }
