@@ -1,7 +1,7 @@
 const {toFahrenheit, getWindDirection, feelsLike} = require("./utils");
 
 function iconUrl(uri) {
-    return `https://api.weather.gov${uri}`;
+    return `${uri}`;
 }
 
 function forecastPeriod(period, options) {
